@@ -196,8 +196,16 @@
         const SUPABASE_URL = 'https://zlddrwegopxqwytdqhol.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_FZJnrH53EXLdbuyyM0iltg_i4-MRNSi';
         // ==========================================
-        
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // SUPABASE BAĞLANTISI (Güvenli Tanım)
+const supabase = (function() {
+    try {
+        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } catch(e) {
+        console.error("Supabase yüklenemedi:", e);
+        return null;
+    }
+})();
         
         const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3500, 
