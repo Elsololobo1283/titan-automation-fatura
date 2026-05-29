@@ -106,7 +106,7 @@
 
     <nav class="navbar">
         <div class="logo-container">
-            <img src="LOGO.png" alt="Titan Automation Logo" onerror="this.src='https://via.placeholder.com/150x50?text=TITAN+LOGO'">
+            <img src="LOGO.png" alt="Titan Automation Logo" onerror="this.style.display='none'">
         </div>
         <ul class="nav-links">
             <li><a href="#">ANASAYFA</a></li>
@@ -197,15 +197,8 @@
         const SUPABASE_ANON_KEY = 'sb_publishable_FZJnrH53EXLdbuyyM0iltg_i4-MRNSi';
         // ==========================================
 
-        // SUPABASE BAĞLANTISI (Güvenli Tanım)
-const supabase = (function() {
-    try {
-        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } catch(e) {
-        console.error("Supabase yüklenemedi:", e);
-        return null;
-    }
-})();
+        // ÇAKIŞMAYI ÖNLEMEK İÇİN İSİM DEĞİŞTİRİLDİ: supabaseClient
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
         const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3500, 
@@ -247,15 +240,10 @@ const supabase = (function() {
 
         // SUPABASE'DEN VERİ OKUMA
         async function loadFromDatabase() {
-            if(SUPABASE_URL.includes('BURAYA')) {
-                hideLoader();
-                Swal.fire('Eksik Ayar', 'Lütfen kodun içindeki SUPABASE_URL ve KEY kısımlarını doldurun!', 'error');
-                return;
-            }
-
             showLoader("Buluttan faturalar çekiliyor...");
             try {
-                const { data, error } = await supabase.from('faturalar').select('*');
+                // supabase yerine supabaseClient kullanılıyor
+                const { data, error } = await supabaseClient.from('faturalar').select('*');
                 if (error) throw error;
                 
                 dbRows = data || [];
@@ -346,7 +334,6 @@ const supabase = (function() {
                     const faturaNo = getTagValue(xmlDoc, 'ID');
                     if(!faturaNo) { errorCount++; continue; }
 
-                    // Hem bellekteki hem de bu döngüde eklenecek olanlar arasında çift kontrol
                     const existsInDb = dbRows.some(r => r.fatura_no === faturaNo);
                     const existsInBatch = allRowsToInsert.some(r => r.fatura_no === faturaNo);
                     
@@ -400,7 +387,8 @@ const supabase = (function() {
                 
                 if(allRowsToInsert.length > 0) {
                     showLoader("Buluta gönderiliyor...");
-                    const { error } = await supabase.from('faturalar').insert(allRowsToInsert);
+                    // supabase yerine supabaseClient kullanılıyor
+                    const { error } = await supabaseClient.from('faturalar').insert(allRowsToInsert);
                     if (error) throw error;
 
                     dbRows.push(...allRowsToInsert);
@@ -416,7 +404,6 @@ const supabase = (function() {
             } finally {
                 hideLoader(); 
                 
-                // Benzersiz fatura sayısını hesapla
                 const addedFaturaSet = new Set(allRowsToInsert.map(r => r.fatura_no));
                 const addedCount = addedFaturaSet.size;
 
@@ -437,12 +424,11 @@ const supabase = (function() {
 
         // SUPABASE UPDATE İŞLEMLERİ
         async function updateSantiyeInDB(faturaNo, value) {
-            // Arayüzü anında güncelle (Optimistic UI)
             dbRows.forEach(r => { if(r.fatura_no === faturaNo) r.santiye = value; });
             filterTable(); 
 
-            // Arkaplanda bulutu güncelle
-            const { error } = await supabase.from('faturalar').update({ santiye: value }).eq('fatura_no', faturaNo);
+            // supabase yerine supabaseClient kullanılıyor
+            const { error } = await supabaseClient.from('faturalar').update({ santiye: value }).eq('fatura_no', faturaNo);
             if (error) {
                 Toast.fire({ icon: 'error', title: 'Şantiye buluta kaydedilemedi!' });
             } else {
@@ -453,11 +439,11 @@ const supabase = (function() {
         let timeout = null;
         function updateAciklamaInDB(faturaNo, value) {
             clearTimeout(timeout);
-            // Arayüzü anında güncelle
             dbRows.forEach(r => { if(r.fatura_no === faturaNo) r.aciklama = value; });
 
             timeout = setTimeout(async () => {
-                const { error } = await supabase.from('faturalar').update({ aciklama: value }).eq('fatura_no', faturaNo);
+                // supabase yerine supabaseClient kullanılıyor
+                const { error } = await supabaseClient.from('faturalar').update({ aciklama: value }).eq('fatura_no', faturaNo);
                 if (error) {
                     Toast.fire({ icon: 'error', title: 'Not buluta kaydedilemedi!' });
                 } else {
@@ -671,8 +657,8 @@ const supabase = (function() {
                         if (result.isConfirmed) {
                             showLoader("Bulut temizleniyor...");
                             
-                            // Supabase'deki tüm verileri id sıfırdan farklı olanları silecek şekilde kurgulandı (yani hepsini siler)
-                            const { error } = await supabase.from('faturalar').delete().neq('id', '0');
+                            // supabase yerine supabaseClient kullanılıyor
+                            const { error } = await supabaseClient.from('faturalar').delete().neq('id', '0');
                             
                             if (error) {
                                 Toast.fire({ icon: 'error', title: 'Bulut temizlenirken hata oluştu!' });
