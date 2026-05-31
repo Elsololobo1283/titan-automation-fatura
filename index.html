@@ -65,7 +65,6 @@
         .stat-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
         .stat-icon.blue { background: #eff6ff; color: var(--primary); }
         .stat-icon.green { background: #ecfdf5; color: var(--success); }
-        .stat-icon.purple { background: #f5f3ff; color: #8b5cf6; }
         .stat-icon.orange { background: #fffbeb; color: var(--warning); }
         
         .chart-card { background: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); height: 350px; display: flex; flex-direction: column; align-items: center; }
@@ -73,11 +72,11 @@
         .chart-container { width: 100%; height: 100%; position: relative; }
 
         /* Upload Zone */
-        #drop-zone { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px dashed #cbd5e1; border-radius: 24px; padding: 50px 40px; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 30px; }
+        #drop-zone { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 2px dashed #cbd5e1; border-radius: 24px; padding: 40px 40px; text-align: center; cursor: pointer; transition: all 0.3s ease; margin-bottom: 30px; }
         #drop-zone:hover, #drop-zone.hover { background: #eff6ff; border-color: var(--primary); transform: scale(1.01); }
-        #drop-zone i { font-size: 56px; color: var(--accent); margin-bottom: 20px; filter: drop-shadow(0 4px 6px rgba(14,165,233,0.3)); }
-        #drop-zone strong { font-size: 20px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 8px; }
-        #drop-zone span { color: var(--text-muted); font-size: 15px; }
+        #drop-zone i { font-size: 56px; color: var(--accent); margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(14,165,233,0.3)); }
+        #drop-zone strong { font-size: 18px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 6px; }
+        #drop-zone span { color: var(--text-muted); font-size: 14px; }
 
         /* Control Panel */
         .control-panel { background: var(--card); padding: 20px 25px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
@@ -119,7 +118,6 @@
 
         /* Accounting Badges & Colors */
         .money { font-family: 'Courier New', Courier, monospace; font-weight: 700; font-size: 15px; }
-        .kdv-badge { display: inline-block; padding: 3px 6px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 2px;}
         .pay-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         .pay-badge.active { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
 
@@ -150,7 +148,7 @@
         </div>
         <div class="sidebar-footer">
             <p>Destek: info@titanautomation.com.tr</p>
-            <p style="color: #64748b;">v3.0 Premium Payment Build</p>
+            <p style="color: #64748b;">v3.1 BugFix Build</p>
         </div>
     </div>
 
@@ -166,7 +164,6 @@
 
         <div class="content-pad">
             
-            <!-- SAYFA 1: FATURA YÖNETİMİ -->
             <div id="page-fatura-yonetimi" class="page-section active">
                 <div class="dashboard-grid">
                     <div class="stat-card">
@@ -243,7 +240,6 @@
                 </div>
             </div>
 
-            <!-- SAYFA 2: ŞANTİYE ANALİZİ -->
             <div id="page-santiye-analizi" class="page-section">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
                     <div class="chart-card">
@@ -254,14 +250,11 @@
                     </div>
                     <div class="chart-card" style="height: auto; align-items: flex-start;">
                         <h3>Lokasyon Bazlı Dağılım Detayları</h3>
-                        <div style="width: 100%; margin-top: 15px;" id="santiye-details-list">
-                            <!-- JS ile doldurulacak -->
-                        </div>
+                        <div style="width: 100%; margin-top: 15px;" id="santiye-details-list"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- SAYFA 3: MUHASEBE VE ÖDEME RAPORLARI -->
             <div id="page-muhasebe-raporlari" class="page-section">
                 <div class="dashboard-grid">
                     <div class="stat-card">
@@ -301,11 +294,10 @@
                 </div>
             </div>
 
-            <!-- SAYFA 4: SİSTEM AYARLARI -->
             <div id="page-sistem-ayarlari" class="page-section">
                 <div class="stat-card" style="padding: 40px; display: block;">
                     <h3 style="margin-bottom: 20px;">Sistem Konfigürasyonu</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Titan Automation Cloud V3.0 Aktif API entegrasyonu başarıyla sağlandı.</p>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Titan Automation Cloud V3.1 Aktif API entegrasyonu başarıyla sağlandı.</p>
                     <button class="btn btn-primary" onclick="loadFromDatabase()"><i class="fa-solid fa-rotate"></i> Bağlantıyı Yenile</button>
                 </div>
             </div>
@@ -314,7 +306,6 @@
     </div>
 
     <script>
-        // SPA Sayfa Yönetimi
         function switchPage(pageId) {
             document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -335,7 +326,6 @@
             updateDashboard();
         }
 
-        // Supabase Bağlantı Parametreleri
         const SUPABASE_URL = 'https://zlddrwegopxqwytdqhol.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_FZJnrH53EXLdbuyyM0iltg_i4-MRNSi';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -371,7 +361,6 @@
             return '';
         }
 
-        // Veritabanından Veri Çekme
         async function loadFromDatabase() {
             showLoader("Buluttan muhasebe kayıtları çekiliyor...");
             try {
@@ -394,7 +383,6 @@
             }
         }
 
-        // Filtreleme Algoritması
         function filterTable() {
             const searchInputEl = document.getElementById('search-input');
             const filterSantiyeEl = document.getElementById('filter-santiye');
@@ -427,7 +415,6 @@
             updateDashboard();
         }
 
-        // Sürükle Bırak Olayları
         if(dropZone) {
             dropZone.addEventListener('click', () => fileInput && fileInput.click());
             dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('hover'); });
@@ -438,14 +425,13 @@
         }
         if(fileInput) { fileInput.addEventListener('change', (e) => handleFiles(e.target.files)); }
 
-        // XML Ayrıştırma ve Fatura Seviyesinde Toplama (Hizmet detayları kaldırıldı)
+        // MÜHENDİSLİK GÜNCELLEMESİ: Gelişmiş UBL-TR Entegrasyon Algoritması (KDV Sorunu Çözüldü)
         async function handleFiles(files) {
             if(!files || files.length === 0) return;
             showLoader(`Fatura KDV ve Matrah toplamları hesaplanıyor...`);
             
             let allRowsToInsert = [];
             let duplicateCount = 0;
-            let errorCount = 0;
 
             try {
                 for (let file of Array.from(files)) {
@@ -454,16 +440,18 @@
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(text, "text/xml");
                     
-                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) { errorCount++; continue; }
+                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) { continue; }
 
                     const faturaNo = getTagValue(xmlDoc, 'ID');
-                    if(!faturaNo) { errorCount++; continue; }
+                    if(!faturaNo) { continue; }
 
                     const existsInDb = dbRows.some(r => r.fatura_no === faturaNo);
                     const existsInBatch = allRowsToInsert.some(r => r.fatura_no === faturaNo);
                     if(existsInDb || existsInBatch) { duplicateCount++; continue; }
 
                     const tarih = getTagValue(xmlDoc, 'IssueDate');
+                    
+                    // 1. Kurumsal Satıcı Unvan Kombinasyonu
                     let unvan = 'Bilinmiyor';
                     const supplierParties = xmlDoc.getElementsByTagNameNS("*", "AccountingSupplierParty").length > 0 
                         ? xmlDoc.getElementsByTagNameNS("*", "AccountingSupplierParty") 
@@ -474,37 +462,66 @@
                         if (partyName) {
                             const nameNode = partyName.getElementsByTagNameNS("*", "Name")[0] || partyName.getElementsByTagName("Name")[0];
                             if(nameNode) unvan = nameNode.textContent.trim();
-                        }
-                    }
-
-                    const invoiceLines = xmlDoc.getElementsByTagNameNS("*", "InvoiceLine").length > 0
-                        ? xmlDoc.getElementsByTagNameNS("*", "InvoiceLine")
-                        : xmlDoc.getElementsByTagName("InvoiceLine");
-                        
-                    let totalMatrah = 0;
-                    let totalKdv = 0;
-
-                    // Tüm satır detaylarını tek faturada konsolide etme
-                    for(let i=0; i<invoiceLines.length; i++) {
-                        const line = invoiceLines[i];
-                        const matrah = parseFloat(getTagValue(line, 'LineExtensionAmount')) || 0;
-                        
-                        let kdvOrani = 0;
-                        const itemNodes = line.getElementsByTagNameNS("*", "Item").length > 0 ? line.getElementsByTagNameNS("*", "Item") : line.getElementsByTagName("Item");
-                        if(itemNodes.length > 0) {
-                            const taxCat = itemNodes[0].getElementsByTagNameNS("*", "ClassifiedTaxCategory").length > 0 
-                                           ? itemNodes[0].getElementsByTagNameNS("*", "ClassifiedTaxCategory")[0] 
-                                           : itemNodes[0].getElementsByTagName("ClassifiedTaxCategory")[0];
-                            if(taxCat) {
-                                kdvOrani = parseFloat(getTagValue(taxCat, 'Percent')) || 0;
+                        } else {
+                            const legalEntity = supplierParties[0].getElementsByTagNameNS("*", "PartyLegalEntity")[0] || supplierParties[0].getElementsByTagName("PartyLegalEntity")[0];
+                            if(legalEntity) {
+                                const regNameNode = legalEntity.getElementsByTagNameNS("*", "RegistrationName")[0] || legalEntity.getElementsByTagName("RegistrationName")[0];
+                                if(regNameNode) unvan = regNameNode.textContent.trim();
                             }
                         }
-                        const kdvTutari = matrah * (kdvOrani / 100);
-                        totalMatrah += matrah;
-                        totalKdv += kdvTutari;
                     }
 
-                    const totalGenel = totalMatrah + totalKdv;
+                    // 2. KRİTİK HATA ÇÖZÜMÜ: Root Seviyesinden KDV ve Matrah Çekme Algoritması
+                    let totalMatrah = 0;
+                    let totalKdv = 0;
+                    let totalGenel = 0;
+
+                    // Matrahı bulma (TaxExclusiveAmount)
+                    let taxExclusiveEls = xmlDoc.getElementsByTagName('TaxExclusiveAmount');
+                    if(taxExclusiveEls.length > 0) {
+                        totalMatrah = parseFloat(taxExclusiveEls[0].textContent) || 0;
+                    } else {
+                        let lineExtEls = xmlDoc.getElementsByTagName('LineExtensionAmount');
+                        if(lineExtEls.length > 0) totalMatrah = parseFloat(lineExtEls[lineExtEls.length - 1].textContent) || 0;
+                    }
+
+                    // KDV'yi bulma (Root TaxTotal -> TaxAmount)
+                    const allTaxTotals = xmlDoc.getElementsByTagName('TaxTotal');
+                    if(allTaxTotals.length > 0) {
+                        let rootTaxTotal = allTaxTotals[allTaxTotals.length - 1]; // En güvenli fallback ana gövde sonundakidir
+                        for(let t=0; t<allTaxTotals.length; t++) {
+                            let pName = allTaxTotals[t].parentNode.localName || allTaxTotals[t].parentNode.tagName;
+                            if(pName && (pName.toLowerCase() === 'invoice' || pName.toLowerCase().includes('invoice'))) {
+                                rootTaxTotal = allTaxTotals[t];
+                                break;
+                            }
+                        }
+                        const taxAmountEl = rootTaxTotal.getElementsByTagName('TaxAmount')[0];
+                        if(taxAmountEl) totalKdv = parseFloat(taxAmountEl.textContent) || 0;
+                    }
+
+                    // Genel Toplamı bulma (TaxInclusiveAmount veya PayableAmount)
+                    let taxInclusiveEls = xmlDoc.getElementsByTagName('TaxInclusiveAmount');
+                    let payableEls = xmlDoc.getElementsByTagName('PayableAmount');
+                    if(taxInclusiveEls.length > 0) {
+                        totalGenel = parseFloat(taxInclusiveEls[0].textContent) || 0;
+                    } else if(payableEls.length > 0) {
+                        totalGenel = parseFloat(payableEls[0].textContent) || 0;
+                    } else {
+                        totalGenel = totalMatrah + totalKdv;
+                    }
+
+                    // Fallback: Eğer kurumsal olmayan özel entegratör hatasından her şey sıfır geldiyse
+                    if(totalMatrah === 0 && totalKdv === 0) {
+                        const invoiceLines = xmlDoc.getElementsByTagName('InvoiceLine');
+                        for(let i=0; i<invoiceLines.length; i++) {
+                            const line = invoiceLines[i];
+                            totalMatrah += parseFloat(getTagValue(line, 'LineExtensionAmount')) || 0;
+                            const lineTax = line.getElementsByTagName('TaxAmount')[0];
+                            if(lineTax) totalKdv += parseFloat(lineTax.textContent) || 0;
+                        }
+                        totalGenel = totalMatrah + totalKdv;
+                    }
 
                     allRowsToInsert.push({
                         id: Date.now() + Math.random().toString(36).substr(2, 9), 
@@ -516,13 +533,13 @@
                         miktar: 1, 
                         birim_fiyat: totalMatrah, 
                         matrah: totalMatrah,
-                        kdv_orani: 0, // Konsolide satırda genel KDV tutarı basılıyor
+                        kdv_orani: 0, 
                         kdv_tutari: totalKdv,
                         toplam_tutar: totalGenel,
                         gider_tipi: 'Normal', 
                         satir_tutari: totalMatrah, 
                         aciklama: '', 
-                        gider_durumu: 'Bekliyor', // Ödeme takip alanı
+                        gider_durumu: 'Bekliyor', 
                         raw_xml: text
                     });
                 }
@@ -539,14 +556,13 @@
             } finally {
                 hideLoader(); 
                 if(allRowsToInsert.length > 0) {
-                    Toast.fire({ icon: 'success', title: `${allRowsToInsert.length} adet fatura konsolide edilerek işlendi!` });
+                    Toast.fire({ icon: 'success', title: `${allRowsToInsert.length} adet fatura başarıyla işlendi!` });
                 }
                 filterTable(); 
                 if(fileInput) fileInput.value = '';
             }
         }
 
-        // Alan Güncelleme (Şantiye Değişimi veya Ödeme Listesi Durumu)
         async function updateFieldInDB(faturaNo, fieldName, value) {
             dbRows.forEach(r => { if(r.fatura_no === faturaNo) r[fieldName] = value; });
             filterTable(); 
@@ -569,7 +585,6 @@
             return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount || 0);
         }
 
-        // Ana Fatura Tablosunu Çizme
         function renderTable() {
             if(!tableBody) return;
             tableBody.innerHTML = '';
@@ -600,7 +615,7 @@
                     <td style="font-weight:600; color:var(--text-muted);">${row.tarih || ''}</td>
                     <td><strong style="color:var(--text-main); font-size:13px;">${row.unvan || 'Bilinmiyor'}</strong></td>
                     <td class="right-align"><div class="money">${formatMoney(row.matrah)} ₺</div></td>
-                    <td class="right-align"><div class="money">${formatMoney(row.kdv_tutari)} ₺</div></td>
+                    <td class="right-align"><div class="money" style="color: var(--danger);">${formatMoney(row.kdv_tutari)} ₺</div></td>
                     <td class="right-align"><div class="money" style="color:var(--primary);">${formatMoney(row.toplam_tutar)} ₺</div></td>
                     <td style="text-align:center;">
                         <div class="switch-container">
@@ -616,7 +631,6 @@
             });
         }
 
-        // Dashboard Metrikleri ve Ödeme Listesi Güncellemesi
         function updateDashboard() {
             const fCountEl = document.getElementById('stat-fatura-count');
             const tAmountEl = document.getElementById('stat-total-amount');
@@ -627,7 +641,6 @@
             const payTableBody = document.getElementById('payment-table-body');
             const detailsListEl = document.getElementById('santiye-details-list');
 
-            // 1. Ana Sayaçlar
             if(fCountEl) fCountEl.innerText = filteredRows.length;
             const totalSum = filteredRows.reduce((sum, r) => sum + (r.toplam_tutar || 0), 0);
             if(tAmountEl) tAmountEl.innerText = formatMoney(totalSum) + " ₺";
@@ -635,12 +648,10 @@
             const approvedInvoices = filteredRows.filter(r => r.gider_durumu === 'MuhasebeOnay');
             if(qCountEl) qCountEl.innerText = approvedInvoices.length;
 
-            // 2. Muhasebe Ödeme Raporları Hesapları
             if(totalDebtEl) totalDebtEl.innerText = formatMoney(totalSum) + " ₺";
             const approvedSum = approvedInvoices.reduce((sum, r) => sum + (r.toplam_tutar || 0), 0);
             if(approvedPayEl) approvedPayEl.innerText = formatMoney(approvedSum) + " ₺";
 
-            // Fatura Ödeme Listesi Tablosunu Doldurma
             if(payTableBody) {
                 payTableBody.innerHTML = '';
                 if(approvedInvoices.length === 0) {
@@ -661,7 +672,6 @@
                 }
             }
 
-            // 3. Grafik ve Şantiye Analiz Listesi
             const santiyeTotals = {};
             filteredRows.forEach(row => {
                 const sName = row.santiye || 'Merkez (Belirtilmemiş)';
@@ -698,16 +708,15 @@
             });
         }
 
-        // XML'den XSLT Çıkarıp Orijinal Görüntüyü Pop-up Açma Modülü
         function showInvoiceVisual(faturaNo) {
             const rowData = dbRows.find(r => r.fatura_no === faturaNo && r.raw_xml != null);
-            if(!rowData) { Swal.fire('Hata', 'Bu faturanın XML şablon verisi bulutta bulunamadı.', 'error'); return; }
+            if(!rowData) { Swal.fire('Hata', 'XML verisi bulutta bulunamadı.', 'error'); return; }
             try {
                 const xmlDoc = new DOMParser().parseFromString(rowData.raw_xml, "text/xml");
                 let xsltB64 = '';
                 const elements = xmlDoc.getElementsByTagName('*');
                 for(let i=0; i<elements.length; i++) { if(elements[i].localName === 'EmbeddedDocumentBinaryObject') { xsltB64 = elements[i].textContent; break; } }
-                if (!xsltB64) { Swal.fire('Eksik Veri', 'XSLT görsel şablonu XML içerisinden okunamadı.', 'info'); return; }
+                if (!xsltB64) { Swal.fire('Eksik Veri', 'XSLT şablonu bulunamadı.', 'info'); return; }
                 const binary = window.atob(xsltB64);
                 const bytes = new Uint8Array(binary.length);
                 for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
@@ -740,11 +749,10 @@
             } catch (e) { console.error(e); Swal.fire('Hata', 'Görsel fatura render edilemedi.', 'error'); }
         }
 
-        // Bulut Temizleme Protokolü
         const clearBtn = document.getElementById('clear-btn');
         if(clearBtn) {
             clearBtn.addEventListener('click', () => {
-                Swal.fire({ title: 'Tüm Kayıtlar Silinsin mi?', text: "Buluttaki tüm konsolide veriler sıfırlanacak!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#64748b', confirmButtonText: 'Evet, Sil!', cancelButtonText: 'İptal'
+                Swal.fire({ title: 'Tüm Kayıtlar Silinsin mi?', text: "Buluttaki tüm veriler sıfırlanacak!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#64748b', confirmButtonText: 'Evet, Sil!', cancelButtonText: 'İptal'
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         showLoader("Temizleniyor...");
@@ -760,7 +768,6 @@
             });
         }
 
-        // Excel / CSV Aktarım Altyapısı
         const exportBtn = document.getElementById('export-btn');
         if(exportBtn) {
             exportBtn.addEventListener('click', () => {
