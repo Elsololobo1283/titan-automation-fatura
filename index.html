@@ -148,7 +148,7 @@
         </div>
         <div class="sidebar-footer">
             <p>Destek: info@titanautomation.com.tr</p>
-            <p style="color: #64748b;">v3.1 BugFix Build</p>
+            <p style="color: #64748b;">v3.2 Production Build</p>
         </div>
     </div>
 
@@ -164,6 +164,7 @@
 
         <div class="content-pad">
             
+            <!-- SAYFA 1: FATURA YÖNETİMİ -->
             <div id="page-fatura-yonetimi" class="page-section active">
                 <div class="dashboard-grid">
                     <div class="stat-card">
@@ -240,6 +241,7 @@
                 </div>
             </div>
 
+            <!-- SAYFA 2: ŞANTİYE ANALİZİ -->
             <div id="page-santiye-analizi" class="page-section">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
                     <div class="chart-card">
@@ -255,6 +257,7 @@
                 </div>
             </div>
 
+            <!-- SAYFA 3: MUHASEBE VE ÖDEME RAPORLARI -->
             <div id="page-muhasebe-raporlari" class="page-section">
                 <div class="dashboard-grid">
                     <div class="stat-card">
@@ -294,10 +297,11 @@
                 </div>
             </div>
 
+            <!-- SAYFA 4: SİSTEM AYARLARI -->
             <div id="page-sistem-ayarlari" class="page-section">
                 <div class="stat-card" style="padding: 40px; display: block;">
                     <h3 style="margin-bottom: 20px;">Sistem Konfigürasyonu</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Titan Automation Cloud V3.1 Aktif API entegrasyonu başarıyla sağlandı.</p>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Titan Automation Cloud V3.2 Aktif API entegrasyonu başarıyla sağlandı.</p>
                     <button class="btn btn-primary" onclick="loadFromDatabase()"><i class="fa-solid fa-rotate"></i> Bağlantıyı Yenile</button>
                 </div>
             </div>
@@ -356,8 +360,6 @@
         function getTagValue(doc, tagName) {
             const nsElements = doc.getElementsByTagNameNS("*", tagName);
             if (nsElements.length > 0) return nsElements[0].textContent.trim();
-            const directEls = doc.getElementsByTagName(tagName);
-            if (directEls.length > 0) return directEls[0].textContent.trim();
             return '';
         }
 
@@ -425,7 +427,7 @@
         }
         if(fileInput) { fileInput.addEventListener('change', (e) => handleFiles(e.target.files)); }
 
-        // MÜHENDİSLİK GÜNCELLEMESİ: Gelişmiş UBL-TR Entegrasyon Algoritması (KDV Sorunu Çözüldü)
+        // MÜHENDİSLİK ÇÖZÜMÜ: XML Namespace-Agnostic Toplam Hesaplama Altyapısı
         async function handleFiles(files) {
             if(!files || files.length === 0) return;
             showLoader(`Fatura KDV ve Matrah toplamları hesaplanıyor...`);
@@ -440,7 +442,7 @@
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(text, "text/xml");
                     
-                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) { continue; }
+                    if (xmlDoc.getElementsByTagNameNS("*", "parsererror").length > 0) { continue; }
 
                     const faturaNo = getTagValue(xmlDoc, 'ID');
                     if(!faturaNo) { continue; }
@@ -451,75 +453,61 @@
 
                     const tarih = getTagValue(xmlDoc, 'IssueDate');
                     
-                    // 1. Kurumsal Satıcı Unvan Kombinasyonu
+                    // 1. Satıcı Unvan Kombinasyonu (Namespace Koruyuculu)
                     let unvan = 'Bilinmiyor';
-                    const supplierParties = xmlDoc.getElementsByTagNameNS("*", "AccountingSupplierParty").length > 0 
-                        ? xmlDoc.getElementsByTagNameNS("*", "AccountingSupplierParty") 
-                        : xmlDoc.getElementsByTagName("AccountingSupplierParty");
+                    const supplierParties = xmlDoc.getElementsByTagNameNS("*", "AccountingSupplierParty");
                         
                     if (supplierParties.length > 0) {
-                        const partyName = supplierParties[0].getElementsByTagNameNS("*", "PartyName")[0] || supplierParties[0].getElementsByTagName("PartyName")[0];
+                        const partyName = supplierParties[0].getElementsByTagNameNS("*", "PartyName")[0];
                         if (partyName) {
-                            const nameNode = partyName.getElementsByTagNameNS("*", "Name")[0] || partyName.getElementsByTagName("Name")[0];
+                            const nameNode = partyName.getElementsByTagNameNS("*", "Name")[0];
                             if(nameNode) unvan = nameNode.textContent.trim();
                         } else {
-                            const legalEntity = supplierParties[0].getElementsByTagNameNS("*", "PartyLegalEntity")[0] || supplierParties[0].getElementsByTagName("PartyLegalEntity")[0];
+                            const legalEntity = supplierParties[0].getElementsByTagNameNS("*", "PartyLegalEntity")[0];
                             if(legalEntity) {
-                                const regNameNode = legalEntity.getElementsByTagNameNS("*", "RegistrationName")[0] || legalEntity.getElementsByTagName("RegistrationName")[0];
+                                const regNameNode = legalEntity.getElementsByTagNameNS("*", "RegistrationName")[0];
                                 if(regNameNode) unvan = regNameNode.textContent.trim();
                             }
                         }
                     }
 
-                    // 2. KRİTİK HATA ÇÖZÜMÜ: Root Seviyesinden KDV ve Matrah Çekme Algoritması
+                    // 2. KESİN ÇÖZÜM: Bütün Etiketleri Wildcard ile Çekme Algoritması
                     let totalMatrah = 0;
                     let totalKdv = 0;
                     let totalGenel = 0;
 
-                    // Matrahı bulma (TaxExclusiveAmount)
-                    let taxExclusiveEls = xmlDoc.getElementsByTagName('TaxExclusiveAmount');
+                    // Matrah Tespiti
+                    let taxExclusiveEls = xmlDoc.getElementsByTagNameNS("*", "TaxExclusiveAmount");
                     if(taxExclusiveEls.length > 0) {
                         totalMatrah = parseFloat(taxExclusiveEls[0].textContent) || 0;
                     } else {
-                        let lineExtEls = xmlDoc.getElementsByTagName('LineExtensionAmount');
+                        let lineExtEls = xmlDoc.getElementsByTagNameNS("*", "LineExtensionAmount");
                         if(lineExtEls.length > 0) totalMatrah = parseFloat(lineExtEls[lineExtEls.length - 1].textContent) || 0;
                     }
 
-                    // KDV'yi bulma (Root TaxTotal -> TaxAmount)
-                    const allTaxTotals = xmlDoc.getElementsByTagName('TaxTotal');
+                    // KDV Tespiti (Önek bağımsız ana gövde altındaki TaxTotal düğümünden)
+                    const allTaxTotals = xmlDoc.getElementsByTagNameNS("*", "TaxTotal");
                     if(allTaxTotals.length > 0) {
-                        let rootTaxTotal = allTaxTotals[allTaxTotals.length - 1]; // En güvenli fallback ana gövde sonundakidir
+                        let rootTaxTotal = allTaxTotals[allTaxTotals.length - 1]; 
                         for(let t=0; t<allTaxTotals.length; t++) {
-                            let pName = allTaxTotals[t].parentNode.localName || allTaxTotals[t].parentNode.tagName;
-                            if(pName && (pName.toLowerCase() === 'invoice' || pName.toLowerCase().includes('invoice'))) {
+                            let pName = allTaxTotals[t].parentNode.localName || allTaxTotals[t].parentNode.tagName || '';
+                            if(pName && pName.toLowerCase().includes('invoice')) {
                                 rootTaxTotal = allTaxTotals[t];
                                 break;
                             }
                         }
-                        const taxAmountEl = rootTaxTotal.getElementsByTagName('TaxAmount')[0];
+                        const taxAmountEl = rootTaxTotal.getElementsByTagNameNS("*", "TaxAmount")[0];
                         if(taxAmountEl) totalKdv = parseFloat(taxAmountEl.textContent) || 0;
                     }
 
-                    // Genel Toplamı bulma (TaxInclusiveAmount veya PayableAmount)
-                    let taxInclusiveEls = xmlDoc.getElementsByTagName('TaxInclusiveAmount');
-                    let payableEls = xmlDoc.getElementsByTagName('PayableAmount');
+                    // Genel Toplam Tespiti
+                    let taxInclusiveEls = xmlDoc.getElementsByTagNameNS("*", "TaxInclusiveAmount");
+                    let payableEls = xmlDoc.getElementsByTagNameNS("*", "PayableAmount");
                     if(taxInclusiveEls.length > 0) {
                         totalGenel = parseFloat(taxInclusiveEls[0].textContent) || 0;
                     } else if(payableEls.length > 0) {
                         totalGenel = parseFloat(payableEls[0].textContent) || 0;
                     } else {
-                        totalGenel = totalMatrah + totalKdv;
-                    }
-
-                    // Fallback: Eğer kurumsal olmayan özel entegratör hatasından her şey sıfır geldiyse
-                    if(totalMatrah === 0 && totalKdv === 0) {
-                        const invoiceLines = xmlDoc.getElementsByTagName('InvoiceLine');
-                        for(let i=0; i<invoiceLines.length; i++) {
-                            const line = invoiceLines[i];
-                            totalMatrah += parseFloat(getTagValue(line, 'LineExtensionAmount')) || 0;
-                            const lineTax = line.getElementsByTagName('TaxAmount')[0];
-                            if(lineTax) totalKdv += parseFloat(lineTax.textContent) || 0;
-                        }
                         totalGenel = totalMatrah + totalKdv;
                     }
 
@@ -615,7 +603,7 @@
                     <td style="font-weight:600; color:var(--text-muted);">${row.tarih || ''}</td>
                     <td><strong style="color:var(--text-main); font-size:13px;">${row.unvan || 'Bilinmiyor'}</strong></td>
                     <td class="right-align"><div class="money">${formatMoney(row.matrah)} ₺</div></td>
-                    <td class="right-align"><div class="money" style="color: var(--danger);">${formatMoney(row.kdv_tutari)} ₺</div></td>
+                    <td class="right-align"><div class="money" style="color: #ef4444; font-weight: 800;">${formatMoney(row.kdv_tutari)} ₺</div></td>
                     <td class="right-align"><div class="money" style="color:var(--primary);">${formatMoney(row.toplam_tutar)} ₺</div></td>
                     <td style="text-align:center;">
                         <div class="switch-container">
@@ -714,7 +702,7 @@
             try {
                 const xmlDoc = new DOMParser().parseFromString(rowData.raw_xml, "text/xml");
                 let xsltB64 = '';
-                const elements = xmlDoc.getElementsByTagName('*');
+                const elements = xmlDoc.getElementsByTagNameNS("*", "*");
                 for(let i=0; i<elements.length; i++) { if(elements[i].localName === 'EmbeddedDocumentBinaryObject') { xsltB64 = elements[i].textContent; break; } }
                 if (!xsltB64) { Swal.fire('Eksik Veri', 'XSLT şablonu bulunamadı.', 'info'); return; }
                 const binary = window.atob(xsltB64);
