@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -30,24 +31,24 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; display: flex; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; }
 
-        /* Sidebar Design */
-        .sidebar { width: 280px; background: var(--secondary); min-height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; color: white; z-index: 100; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-        .sidebar-logo { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .sidebar-logo img { max-width: 180px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
-        .sidebar-logo h1 { font-size: 20px; font-weight: 700; margin-top: 15px; color: var(--accent); letter-spacing: 1px; }
-        .nav-menu { padding: 20px 0; flex: 1; }
-        .nav-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; color: #cbd5e1; text-decoration: none; font-weight: 600; transition: all 0.3s; border-left: 4px solid transparent; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); color: white; border-left-color: var(--accent); }
-        .nav-item i { font-size: 18px; width: 25px; text-align: center; }
-        .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #94a3b8; text-align: center; }
+        /* Top Navbar Design (Yatay Bar Yapısı) */
+        .sidebar { width: 100%; height: 75px; background: var(--secondary); position: fixed; left: 0; top: 0; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 40px; color: white; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .sidebar-logo { display: flex; align-items: center; gap: 10px; }
+        .sidebar-logo img { max-height: 40px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .sidebar-logo h1 { font-size: 18px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+        .nav-menu { display: flex; flex-direction: row; height: 100%; align-items: center; margin-left: 20px; }
+        .nav-item { padding: 0 24px; height: 75px; display: flex; align-items: center; gap: 10px; color: #cbd5e1; text-decoration: none; font-weight: 600; transition: all 0.3s; border-bottom: 4px solid transparent; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); color: white; border-bottom-color: var(--accent); }
+        .nav-item i { font-size: 16px; width: 20px; text-align: center; }
+        .sidebar-footer { font-size: 11px; color: #94a3b8; text-align: right; display: flex; flex-direction: column; justify-content: center; }
 
-        /* Main Content Area */
-        .main-content { margin-left: 280px; flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+        /* Main Content Area Adjustments */
+        .main-content { margin-left: 0; margin-top: 75px; flex: 1; min-height: calc(100vh - 75px); display: flex; flex-direction: column; }
         
         /* Top Header */
-        .top-header { background: var(--card); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 90; }
+        .top-header { background: var(--card); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.03); position: sticky; top: 75px; z-index: 90; }
         .header-title h2 { font-size: 24px; font-weight: 700; color: var(--text-main); }
         .cloud-badge { display: inline-flex; align-items: center; gap: 8px; background: #ecfdf5; color: var(--success); padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; border: 1px solid #d1fae5; box-shadow: 0 2px 10px rgba(16,185,129,0.1); }
 
@@ -111,13 +112,14 @@
         .invoice-link { color: var(--primary); text-decoration: none; cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 8px; background: #eff6ff; transition: all 0.2s; white-space: nowrap; }
         .invoice-link:hover { background: var(--primary); color: white; transform: translateY(-1px); }
 
+        /* Düzeltilen Fatura Ayrım Çizgisi */
         .invoice-group-border td { border-top: 3px solid #cbd5e1 !important; }
 
         /* Accounting Badges & Colors */
         .money { font-family: 'Courier New', Courier, monospace; font-weight: 700; font-size: 15px; }
-        .kdv-badge { display: inline-block; padding: 3px 6px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: var(--text-muted); font-weight: 700; }
-        .kkeg-box { margin-top: 6px; padding: 6px 10px; background: #fef2f2; border: 1px dashed #fca5a5; border-radius: 6px; font-size: 12px; color: #b91c1c; display: block; line-height: 1.4; font-weight: 600; }
-        .ind-box { margin-top: 6px; padding: 6px 10px; background: #ecfdf5; border: 1px dashed #6ee7b7; border-radius: 6px; font-size: 12px; color: #047857; display: block; line-height: 1.4; font-weight: 600; }
+        .kdv-badge { display: inline-block; padding: 3px 6px; background: #f1f5f9; border-radius: 4px; font-size: 11px; color: var(--text-muted); font-weight: 700; margin-top: 2px;}
+        .kkeg-box { margin-top: 6px; padding: 6px 10px; background: #fef2f2; border: 1px dashed #fca5a5; border-radius: 6px; font-size: 12px; color: #b91c1c; display: block; line-height: 1.4; font-weight: 600; text-align: right; }
+        .ind-box { margin-top: 6px; padding: 6px 10px; background: #ecfdf5; border: 1px dashed #6ee7b7; border-radius: 6px; font-size: 12px; color: #047857; display: block; line-height: 1.4; font-weight: 600; text-align: right; }
 
         /* Loader */
         #global-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; display: none; }
@@ -148,7 +150,7 @@
         </div>
         <div class="sidebar-footer">
             <p>Destek: info@titanautomation.com.tr</p>
-            <p style="margin-top:5px; color: #64748b;">v2.0 Premium Build</p>
+            <p style="color: #64748b;">v2.0 Premium Build</p>
         </div>
     </div>
 
@@ -226,7 +228,7 @@
                             <th style="width: 8%;">Tarih</th>
                             <th style="width: 14%;">Satıcı Unvan</th>
                             <th style="width: 12%;">Mal/Hizmet Adı</th>
-                            <th style="width: 10%;">Gider Tipi (KKEG)</th>
+                            <th style="width: 12%;">Gider Tipi (KKEG)</th>
                             <th style="width: 8%; text-align:right;">Matrah</th>
                             <th style="width: 8%; text-align:right;">KDV</th>
                             <th style="width: 8%; text-align:right;">Toplam</th>
@@ -241,13 +243,9 @@
     </div>
 
     <script>
-        // ==========================================
-        // SUPABASE BAĞLANTISI
-        // ==========================================
         const SUPABASE_URL = 'https://zlddrwegopxqwytdqhol.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_FZJnrH53EXLdbuyyM0iltg_i4-MRNSi';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        // ==========================================
 
         const Toast = typeof Swal !== 'undefined' ? Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3500, 
@@ -405,7 +403,6 @@
                         const priceNodes = line.getElementsByTagNameNS("*", "Price").length > 0 ? line.getElementsByTagNameNS("*", "Price") : line.getElementsByTagName("Price");
                         const birimFiyat = priceNodes.length > 0 ? parseFloat(getTagValue(priceNodes[0], 'PriceAmount')) || 0 : 0;
 
-                        // KDV ORANI BULMA (Item -> ClassifiedTaxCategory -> Percent)
                         let kdvOrani = 0;
                         if(itemNodes.length > 0) {
                             const taxCat = itemNodes[0].getElementsByTagNameNS("*", "ClassifiedTaxCategory").length > 0 
@@ -428,15 +425,12 @@
                             mal_hizmet_adi: malHizmetAdi,
                             miktar: miktar, 
                             birim_fiyat: birimFiyat, 
-                            
-                            // Yeni Muhasebe Alanları
                             matrah: matrah,
                             kdv_orani: kdvOrani,
                             kdv_tutari: kdvTutari,
                             toplam_tutar: toplamTutar,
-                            gider_tipi: 'Normal', // Default Gider Türü
-                            
-                            satir_tutari: matrah, // Geriye dönük uyumluluk için
+                            gider_tipi: 'Normal', 
+                            satir_tutari: matrah, 
                             aciklama: '', 
                             raw_xml: isFirstRow ? text : null
                         });
@@ -475,7 +469,6 @@
         }
 
         async function updateFieldInDB(faturaNo, lineId, fieldName, value) {
-            // Lokal state güncelle
             if(lineId) {
                 dbRows.forEach(r => { if(r.id === lineId) r[fieldName] = value; });
             } else {
@@ -483,7 +476,6 @@
             }
             filterTable(); 
 
-            // Bulut güncelle
             let query = supabaseClient.from('faturalar').update({ [fieldName]: value });
             if(lineId) query = query.eq('id', lineId);
             else query = query.eq('fatura_no', faturaNo);
@@ -536,7 +528,8 @@
                 if (!trackedInvoices[row.fatura_no]) trackedInvoices[row.fatura_no] = 0;
                 trackedInvoices[row.fatura_no]++;
                 
-                if(trackedInvoices[row.fatura_no] === rowCount) tr.classList.add('invoice-group-border');
+                // DÜZELTME: Grup sınırı faturanın en son satırına değil, İLK satırına (üst sınırına) eklenerek görsel hizalama sağlandı
+                if(trackedInvoices[row.fatura_no] === 1) tr.classList.add('invoice-group-border');
 
                 let html = '';
                 if (trackedInvoices[row.fatura_no] === 1) {
@@ -565,11 +558,11 @@
                 const toplamTutar = row.toplam_tutar || (matrah + kdvTutari);
                 const gTipi = row.gider_tipi || 'Normal';
                 
-                // KKEG / BİNEK ARAÇ HESAPLAMALARI (%30 KKEG - %70 İNDİRİLECEK)
                 let matrahHtml = `<div class="money">${formatMoney(matrah)}</div>`;
                 let kdvHtml = `<div class="money">${formatMoney(kdvTutari)}</div><span class="kdv-badge">%${kdvOrani} KDV</span>`;
                 let toplamHtml = `<div class="money" style="color:var(--primary);">${formatMoney(toplamTutar)}</div>`;
 
+                // DÜZELTME: Gider tipi Binek Araç olduğunda kaybolan KDV rozeti muhafaza edilerek alt kırılımlar eklendi
                 if (gTipi === 'Binek') {
                     const kkegMatrah = matrah * 0.30;
                     const kkegKdv = kdvTutari * 0.30;
@@ -584,6 +577,7 @@
                     `;
                     kdvHtml = `
                         <div class="money">${formatMoney(kdvTutari)}</div>
+                        <span class="kdv-badge">%${kdvOrani} KDV</span>
                         <div class="ind-box" title="İndirilecek KDV">İnd: ${formatMoney(indKdv)}</div>
                     `;
                     toplamHtml = `
@@ -630,7 +624,6 @@
             const uniqueInvoices = new Set(filteredRows.map(r => r.fatura_no));
             if(fCountEl) fCountEl.innerText = uniqueInvoices.size;
 
-            // KDV Dahil Toplam hesaplanıyor
             const totalAmount = filteredRows.reduce((sum, row) => sum + (row.toplam_tutar || row.satir_tutari || 0), 0);
             if(tAmountEl) tAmountEl.innerText = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(totalAmount);
 
@@ -660,7 +653,6 @@
             });
         }
 
-        // Fatura Görseli (Değiştirilmedi)
         function showInvoiceVisual(faturaNo) {
             const rowData = dbRows.find(r => r.fatura_no === faturaNo && r.raw_xml != null);
             if(!rowData) { if(typeof Swal !== 'undefined') Swal.fire('Hata', 'Bu faturanın görseli bulutta yok.', 'error'); return; }
